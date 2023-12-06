@@ -12,11 +12,13 @@ import sessionRouter from './routers/session.router.js';
 import sesssionViewRouter from './routers/session.view.router.js';
 import viewsRouter from './routers/view.router.js';
 import chatRouter from './routers/chat.router.js';
+import loggertest from "./routers/loggerTest.router.js"
 import { __dirname, passportCall } from './utils.js';
 import messageModel from "./dao/models/message.model.js";
 import dotenv from "dotenv";
 import errorHandler from './middlewares/error.js'
 import mockingRouter from './routers/mockin.router.js'
+import logger from "./logger.js";
 
 dotenv.config()
 
@@ -64,23 +66,24 @@ app.use('/products', passportCall('jwt'), viewsRouter);
 app.use('/carts', viewsRouter);
 app.use('/chat', chatRouter);
 app.use('/api/mockingproducts', mockingRouter)
+app.use('/loggerTest', loggertest)
 
 try{
     await mongoose.connect(MONGO_URI,{
         dbName: MONGO_DB_NAME,
         useUnifiedTopology : true
     })
-    const httpServer = app.listen(PORT, ()=> console.log(`Server up on port ${PORT}`)) 
+    const httpServer = app.listen(PORT, ()=> logger.info(`Server up on port ${PORT}`)) 
 
     const io = new Server(httpServer);
     io.on("connection", (socket) => {
-        console.log(`New Client Connected`)
+        logger.info(`New Client Connected`)
         socket.on('productList', (data) => {
             if (data) {
                 io.emit('updateProducts', data);
-                console.log('Datos enviados al cliente:', data);
+                logger.info('Datos enviados al cliente:', data);
             } else {
-                console.error('Los datos de productos están vacíos o nulos');
+                logger.error('Los datos de productos están vacíos o nulos');
             }
         })
         socket.on('message', async (data) => {
@@ -94,11 +97,11 @@ try{
                 const messages = await messageModel.find()
                 io.emit('logs', messages);
             } catch (err) {
-                console.error('Error al guardar el mensaje:', err);
+                logger.error('Error al guardar el mensaje:', err);
             }
         });
         
     })
 }catch(err){
-    console.log(err.message)
+    logger.error(err.message)
 }

@@ -5,6 +5,7 @@ import ticketModel from "../dao/models/ticket.model.js"
 import { ProductService } from '../services/repositories/index.js'
 import shortid from "shortid"
 import mongoose from "mongoose";
+import logger from "../logger.js";
 
 export const getProductFromCart = async (req, res) =>{
     try{
@@ -21,7 +22,7 @@ export const getProductFromCart = async (req, res) =>{
             response:{ status: 'success', payload: result}
         }
     }catch(err){
-        console.log(err.message)
+        logger.error("getProductFromCart: ", err.message)
     }
 }
 
@@ -30,6 +31,7 @@ export const createCartController = async( req, res) =>{
         const cart = await createCartServices();
         res.status(201).json({ status: 'success', payload: cart })
     }catch(err){
+        logger.error("createCart: ", err.message)
         res.status(500).json({status: 'error', error: err.message});
     }
 }
@@ -37,6 +39,7 @@ export const createCartController = async( req, res) =>{
 export const getCartByIdController = async (req, res) => {
     const cartId = await getProductFromCart(req, res);
     if(!cartId){
+        logger.error("getCartById: ", err.message)
         res.status(404).json({status: 'error', error: 'No Se Encontro El Producto'});
     }else{
         res.json({status: 'success', payload: cartId});
@@ -51,12 +54,14 @@ export const addProductToCartController =async (req, res) => {
         const cart = await getCartByIdServices(cartId);
 
         if (!cart) {
+            logger.error("addProductToCart: ", `El Carrito con el ID ${cartId} NO SE ENCONTRÓ`)
             return res.status(404).json({ status: 'error', error: `El Carrito con el ID ${cartId} NO SE ENCONTRÓ` });
         }
 
         const product = await getProductByIdService(productId);
 
         if (!product) {
+            logger.error("addProductToCart: ", `El Producto con el ID ${productId} NO SE ENCONTRÓ`)
             return res.status(404).json({ status: 'error', error: `El Producto con el ID ${productId} NO SE ENCONTRÓ` });
         }
 
@@ -77,7 +82,7 @@ export const addProductToCartController =async (req, res) => {
 
         return res.status(200).json({ status: 'success', message: 'Producto agregado al carrito', cart });
     } catch (err) {
-        console.error(err.message);
+        logger.error("addProductToCart: Error interno del servidor", err.message);
         return res.status(500).json({ status: 'error', error: 'Error interno del servidor' });
     }
 }
@@ -110,7 +115,7 @@ export const deleteProductToCart = async (req, res) => {
         res.status(200).json({ status: 'success', payload: result})
 
     }catch(err){
-        console.error(err.message);
+        logger.error("deleteProductToCart: Error interno del servidor", err.message);
         return res.status(500).json({ status: 'error', error: 'Error interno del servidor' });
     }
 }
@@ -148,6 +153,7 @@ export const addProductsToCartController = async (req, res) => {
         const result = await cartModel.findByIdAndUpdate(id, cart, { returnDocument: 'after'})
         res.status(200).json({ status: 'success', payload: result})
     }catch(err){
+        logger.error("addProductsToCart: Error interno del servidor", err.message);
         return res.status(500).json({ status: 'error', error: err.message });
     }
 }
@@ -187,6 +193,7 @@ export const updateProductToCartController = async (req, res) => {
         res.status(200).json({ status: 'success', payload: result})
 
     }catch(err){
+        logger.error("updateProductToCart: Error interno del servidor", err.message);
         return res.status(500).json({ status: 'error', error: err.message });
     }
 }
@@ -205,6 +212,7 @@ export const deleteProductsFromCartController = async (req, res) => {
         res.status(200).json({ status: 'success', payload: result})
 
     }catch(err){
+        logger.error("deleteProductsFromCart: Error interno del servidor", err.message);
         return res.status(500).json({ status: 'error', error: err.message });
     }
 }
@@ -212,7 +220,6 @@ export const deleteProductsFromCartController = async (req, res) => {
 export const purchaseController = async (req, res) => {
     try{
             const cid = req.params.cid
-            console.log(cid)
             const shoppingCart = await getCartByIdServices(cid)
             if (!shoppingCart) {
                 return res.status(404).json({ status: 'error', error: `El Carrito con el ID ${id} NO SE ENCONTRÓ` });
@@ -247,28 +254,28 @@ export const purchaseController = async (req, res) => {
                     productsToTicket.push({ product: productToPurchase._id, price: productToPurchase.price, quantity: shoppingCart.products[index].quantity})
                 }
             }
-            console.log("Productos después de la compra:", productsAfterPurchase);
-            console.log('ID del carrito:', cid);
+            logger.info("Productos después de la compra:", productsAfterPurchase);
+            logger.info('ID del carrito:', cid);
             const validId = mongoose.Types.ObjectId.isValid(cid);
             if (!validId) {
                 return res.status(400).json({ status: 'error', error: 'ID de carrito no válido' });
             }
-            console.log("ID del carrito a buscar:", cid);
+            logger.info("ID del carrito a buscar:", cid);
 
             const carrito = await getCartByIdServices(cid)
-            console.log("Resultado de la búsqueda del carrito:", carrito);
+            logger.info("Resultado de la búsqueda del carrito:", carrito);
 
             if (!carrito) {
                 return res.status(404).json({ status: 'error', error: `El Carrito con el ID ${cid} NO SE ENCONTRÓ` });
             }
 
             try {
-                console.log("Productos antes de la actualización:", carrito.products);
+                logger.info("Productos antes de la actualización:", carrito.products);
                 carrito.products = productsAfterPurchase;
                 const updatedCart = await carrito.save();
-                console.log("Productos después de la actualización:", updatedCart.products);
+                logger.info("Productos después de la actualización:", updatedCart.products);
             } catch (error) {
-                console.error("Error al actualizar el carrito:", error);
+                logger.error("Error al actualizar el carrito:", error);
                 return res.status(500).json({ status: 'error', error: 'Error al actualizar el carrito' });
             }
 
@@ -280,6 +287,7 @@ export const purchaseController = async (req, res) => {
             })
         return res.status(201).json({ status: 'success', payload: result })
     }catch(err){
+        logger.error("purchase: Error interno del servidor", err.message);
         return res.status(500).json({ status: 'error', error: err.message })
     }
 }

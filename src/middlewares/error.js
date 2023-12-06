@@ -1,9 +1,10 @@
 import { generate } from "shortid";
 import EErros from "../services/errors/dictionary.js";
 import { generateErrorInfo } from "../services/errors/info.js";
+import logger from "../logger.js";
 
 export default(error, req, res, next) => {
-    console.log(error.cause)
+    logger.error(error.cause)
 
     switch (error.code) {
         case EErros.LOGIN_ERROR:

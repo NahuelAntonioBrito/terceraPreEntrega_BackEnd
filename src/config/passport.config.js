@@ -5,6 +5,7 @@ import { Strategy as GitHubStrategy } from 'passport-github2'
 import userModel from "../dao/models/user.model.js";
 import cartModel from "../dao/models/cart.model.js";
 import { crateHash, isValidPassword, extractCookie, JWT_PRIVATE_KEY, generateToken } from "../utils.js";
+import logger from "../logger.js";
 
 const localStrategy = local.Strategy;
 const JWTStrategy = passportJWT.Strategy
@@ -31,6 +32,7 @@ const initializePassport = () => {
             return done(null, result)
 
         } catch(err) {
+            logger.error("initializePassport: ", err.message);
             return done(err)
         }
     }))
@@ -46,6 +48,7 @@ const initializePassport = () => {
             user.token = token
             return done(null, user)
         }catch(err){
+            logger.error("passportlogin: ", err.message);
             return done(err)
         }
     }))
@@ -73,6 +76,7 @@ const initializePassport = () => {
             await newUser.save(); // Wait for the user to be saved
             return done(null, newUser);
         } catch (err) {
+            logger.error("Error to login with GitHub ", err.message);
             return done('Error to login with GitHub');
         }
     }));
@@ -96,6 +100,7 @@ const initializePassport = () => {
     
             return done(null, user);
         } catch (err) {
+            logger.error("passport current: ", err.message);
             return done(err, false);
         }
     }));

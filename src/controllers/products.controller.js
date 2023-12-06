@@ -1,5 +1,5 @@
 import { addProductService, deleteProductService, getProductByIdService, getProductsService, updateProductService } from "../services/products.services.js";
-
+import logger from "../logger.js";
 
 export const getProductController = async (req, res) => {
     const result = await getProductsService(req, res)
@@ -19,7 +19,7 @@ export const getProductByIdController = async (req, res) => {
         }   
         
     }catch(err){
-        console.log(err.message)
+        logger.error("getProductById: ", err.message)
     }
 }
 
@@ -30,7 +30,7 @@ export const addProductController = async( req, res) =>{
         await productAdd.save();
         res.json({ status: 'success', payload: productAdd });
     } catch (err) {
-        console.error('Error al guardar el producto:', err);
+        logger.error('Error al guardar el producto:', err);
         res.status(500).json({ status: 'error', error: 'No se pudo agregar el producto' });
     }
 }
@@ -48,7 +48,7 @@ export const updateProductController = async (req, res) => {
             res.status(404).json({ status: 'error', error: 'No se encontró el producto' });
         }
     } catch (err) {
-        console.error(err.message);
+        logger.error("updateProduct: ", err.message);
         res.status(500).json({ status: 'error', error: 'Error en la actualización del producto' });
     }
 }
@@ -65,7 +65,7 @@ export const deleteProductController = async( req, res ) => {
             res.status(404).json({ status: 'error', error: 'No se encontró el producto' });
         }
     } catch (err) {
-        console.error(err.message);
+        logger.error("deleteProduct: ", err.message);
         res.status(500).json({ status: 'error', error: 'Error en la actualización del producto' });
     }
 

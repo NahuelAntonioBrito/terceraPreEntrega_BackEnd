@@ -1,0 +1,5 @@
+
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-06T15:54:23.290Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-06T15:54:25.481Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-06T15:56:07.763Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-06T15:56:09.934Z"}

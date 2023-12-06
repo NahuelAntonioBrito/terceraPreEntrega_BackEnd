@@ -1,3 +1,5 @@
+import logger from "../../logger.js";
+
 const socket = io()
 
 const table = document.getElementById('realTimeProducts')
@@ -14,7 +16,7 @@ document.getElementById('createBtn').addEventListener('click', () => {
         category: document.getElementById('category').value,
     };
 
-    console.log(body);
+    logger.info(body);
 
     fetch('/api/products', {
         method: 'post',
@@ -25,7 +27,11 @@ document.getElementById('createBtn').addEventListener('click', () => {
     })
     .then(response => response.json())
     .then(result => {
-        if (result.status === 'error') throw new Error(result.error);
+        if (result.status === 'error') {
+            logger.error(result.error)
+            throw new Error(result.error);
+        }
+        
         return fetch(`/api/products`);
     })
     .then(result => result.json())
@@ -39,7 +45,7 @@ document.getElementById('createBtn').addEventListener('click', () => {
         document.getElementById('stock').value = '';
         document.getElementById('category').value = '';
     })
-    .catch(err => console.log("ocurrió un error", err));
+    .catch(err => logger.error("ocurrió un error", err));
 });
 
 
@@ -53,10 +59,10 @@ deleteProduct = (id) => {
     })
     .then(data => {
         socket.emit('productList', data.payload); // Emite el evento después de que la eliminación sea exitosa
-        console.log("se elimino correctamente");
-        console.log(data.payload);
+        logger.info("se elimino correctamente");
+        logger.info(data.payload);
     })
-    .catch(err => console.log(`Ocurrió un error: ${err}`));
+    .catch(err => logger.error(`Ocurrió un error: ${err}`));
 }
 
 socket.on('updateProducts', (data) => {
@@ -87,7 +93,7 @@ socket.on('updateProducts', (data) => {
         }
     } else {
         // Maneja el caso en el que data no es un iterable válido o es nulo
-        console.error('Los datos recibidos no son un iterable válido o son nulos:', data);
+        logger.error('Los datos recibidos no son un iterable válido o son nulos:', data);
     }
 })
 

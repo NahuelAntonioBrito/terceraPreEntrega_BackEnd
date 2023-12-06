@@ -1,6 +1,7 @@
 import { PORT } from '../app.js';
 import { ProductService } from '../services/repositories/index.js'
 import { getProductFromCart } from '../controllers/carts.controller.js';
+import logger from '../logger.js';
 
 export const viewProductsController = async (req, res) => {
     const result = await ProductService.getAllPaginatedProducts( req );
@@ -39,7 +40,7 @@ export const viewProductsController = async (req, res) => {
 
 export const realTimeProductsController = async (req, res) => {
     const result = await ProductService.getAllPaginatedProducts( req );
-    console.log(result)
+    logger.info("realTimeProducts: ", result)
     if( result.statuscode === 200){
         res.render('realTimeProducts', { products: result.response.payload })
     }else{
@@ -50,7 +51,7 @@ export const realTimeProductsController = async (req, res) => {
 
 export const viewCartController = async(req, res) => {
     const result = await getProductFromCart(req, res)
-    console.log(result)
+    logger.info("viewCart: ", result)
     if( result.statusCode === 200){
         res.render('productsFromCart', { cart: result.response.payload })
     }else{

@@ -2,6 +2,7 @@ import { JWT_COOKIE_NAME } from "../utils.js";
 import CustomError from '../services/errors/custom.error.js'
 import { generateErrorInfo} from '../services/errors/info.js'
 import EErros from "../services/errors/dictionary.js";
+import logger from "../logger.js";
 
 export const registerController = async(req, res) => {
     res.redirect('/')
@@ -35,7 +36,7 @@ export const logoutController = (req, res) => {
 export const githubController = (reqe, res) => {}
 
 export const githubCallBackController = async( req, res) => {
-    console.log('Callback: ', req.user )
+    logger.info('Callback: ', req.user )
     req.session.user = req.user
     res.redirect('/products')
 }

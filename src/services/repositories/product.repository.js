@@ -1,14 +1,16 @@
+import logger from "./../../logger.js";
+
 export default class ProductReposiroty {
     constructor (dao) {
         this.dao = dao
-        console.log('Tipo de dao:', dao.constructor.name);
+        logger.info({ message: 'Tipo de dao:', daoType: dao.constructor.name });
     }
 
     getAllProducts = async() => {
         try {
             return await this.dao.getAllProducts();
         } catch (error) {
-            console.error('Error al obtener todos los productos: ', error);
+            logger.error('Error al obtener todos los productos: ', error);
             throw error;
         }
     }
@@ -16,7 +18,7 @@ export default class ProductReposiroty {
         try {
             return await this.dao.getProductById(id);
         } catch (error) {
-            console.error('Error al obtener el producto: ', error);
+            logger.error('Error al obtener el producto: ', error);
             throw error;
         }
     }
@@ -25,7 +27,7 @@ export default class ProductReposiroty {
             const paginatedProducts = await this.dao.getAllPaginatedProducts(req);
             return paginatedProducts;
         } catch (error) {
-            console.error('Error al obtener todos los productos: ', error);
+            logger.error('Error al obtener todos los productos: ', error);
             throw error;
         }
     }
@@ -33,7 +35,7 @@ export default class ProductReposiroty {
         try {
             return await this.dao.createProduct(data);
         } catch (error) {
-            console.error('Error al crear el Producto: ', error);
+            logger.error('Error al crear el Producto: ', error);
             throw error;
         }
     }
@@ -50,7 +52,7 @@ export default class ProductReposiroty {
         try {
             return await this.dao.deleteProduct(id);
         } catch (error) {
-            console.error('Error al eliminar el Producto: ', error);
+            logger.error('Error al eliminar el Producto: ', error);
             throw error;
         }
     }
