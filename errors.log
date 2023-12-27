@@ -1,5 +1,114 @@
 
-{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-06T15:54:23.290Z"}
-{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-06T15:54:25.481Z"}
-{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-06T15:56:07.763Z"}
-{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-06T15:56:09.934Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T15:38:17.300Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T15:38:19.847Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T15:39:57.017Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T15:39:59.410Z"}
+{"level":"error","message":"\n        Una o mas campos estan incompletas o no son validos.\n        Lista de propiedades obligatorias:\n        - email: Debe estar Completo. (undefined)\n        - pasword: Debe estar Completo. ","timestamp":"2023-12-26T15:40:03.107Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T15:41:15.139Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T15:41:17.612Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T15:41:20.403Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T15:41:22.810Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T15:44:00.006Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T15:44:02.804Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T15:53:05.797Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T15:53:08.445Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T16:19:12.425Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T16:19:15.409Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T16:19:17.197Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T16:19:19.509Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T16:25:12.007Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T16:25:14.653Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T16:25:48.525Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T16:25:50.958Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:32:08.843Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:32:11.591Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:35:58.550Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:36:01.190Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:41:57.293Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:41:59.881Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:44:12.529Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:44:15.142Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:49:02.618Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:49:05.436Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:50:42.256Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:50:47.264Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:52:56.024Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:52:58.431Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:54:02.112Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:54:04.732Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:54:50.904Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:54:53.238Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:55:11.597Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:55:14.133Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:55:41.949Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:55:44.223Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:58:17.576Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:58:20.011Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:58:23.290Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:58:25.714Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:58:51.915Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:58:54.161Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T17:59:49.047Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T17:59:51.683Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:01:58.619Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:02:01.604Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:05:00.507Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:05:03.211Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:11:08.776Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:11:11.282Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:12:13.086Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:12:15.645Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:13:49.729Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:13:52.352Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:15:55.902Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:15:58.594Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:17:21.501Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:17:24.243Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:20:22.390Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:20:25.071Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:21:14.069Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:21:16.483Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:23:25.403Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:23:27.974Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:26:33.176Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:26:35.796Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:27:32.315Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:27:34.642Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:31:08.309Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:31:10.803Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:31:38.051Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:31:40.448Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:33:14.922Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:33:17.874Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:33:46.746Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:33:49.008Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:35:24.576Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:35:27.444Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T18:37:12.226Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T18:37:14.979Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-26T20:24:26.781Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-26T20:24:29.529Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:15:04.719Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:15:10.427Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:15:57.717Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:16:00.068Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:16:06.930Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:16:09.279Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:17:19.699Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:17:22.312Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:17:33.664Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:17:36.017Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:18:12.407Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:18:14.993Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:18:36.884Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:18:39.243Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:19:02.879Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:19:05.181Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:25:44.272Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:25:46.817Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:26:10.846Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:26:13.381Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:28:31.647Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:28:34.214Z"}
+{"daoType":"ProductMongoDAO","level":"info","message":"Tipo de dao:","timestamp":"2023-12-27T00:29:03.759Z"}
+{"level":"info","message":"Server up on port 8080","timestamp":"2023-12-27T00:29:06.353Z"}

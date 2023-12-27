@@ -12,6 +12,7 @@ export const getProductByIdController = async (req, res) => {
         const id = req.params.pid;
         const productId = await getProductByIdService(id)
         if(!productId){
+            logger.error("getProductById: No se encontró el producto");
             res.status(404).json({status: 'error', error: 'No Se Encontro El Producto'});
     
         }else{
@@ -45,6 +46,7 @@ export const updateProductController = async (req, res) => {
         if (updatedProduct) {
             res.json({ status: 'success', payload: updatedProduct });
         } else {
+            logger.error("updateProduct: No se encontró el producto");
             res.status(404).json({ status: 'error', error: 'No se encontró el producto' });
         }
     } catch (err) {
@@ -62,6 +64,7 @@ export const deleteProductController = async( req, res ) => {
         if (deletProduct) {
             res.json({ status: 'success', payload: deletProduct });
         } else {
+            logger.error("deleteProduct: No se encontró el producto");
             res.status(404).json({ status: 'error', error: 'No se encontró el producto' });
         }
     } catch (err) {

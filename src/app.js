@@ -19,6 +19,8 @@ import dotenv from "dotenv";
 import errorHandler from './middlewares/error.js'
 import mockingRouter from './routers/mockin.router.js'
 import logger from "./logger.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import  SwaggerUiExpress  from "swagger-ui-express";
 
 dotenv.config()
 
@@ -36,6 +38,19 @@ const MONGO_DB_NAME = process.env.MONGO_DB_NAME
 
 const app = express();
 
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.1",
+        info: {
+            title: 'Documentación para la aplicacion',
+            description: ' una descripcion clara de la documentación'
+        }
+    },
+    apis: ['./docs/**/*.yaml']
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/docs', SwaggerUiExpress.serve, SwaggerUiExpress.setup(specs))
 
 app.engine('handlebars', handlebars.engine({
     allowProtoPropertiesByDefault: true

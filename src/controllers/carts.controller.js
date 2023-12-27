@@ -106,6 +106,7 @@ export const deleteProductToCart = async (req, res) => {
 
         const productindex = cart.products.findIndex(item => item.product == productId)
         if(productindex === -1){
+            logger.error(`El producto con ID: ${productId} no se encontro el el carrito con ID: ${cartId}`)
             return res.status(400).json({ status: 'error', error: `El producto con ID: ${productId} no se encontro el el carrito con ID: ${cartId}`})
         }else{
             cart.products = cart.products.filter(item => item.product.toString() !== productId)
@@ -135,16 +136,19 @@ export const addProductsToCartController = async (req, res) => {
     
         for( let i = 0; i < products.length; i++){
             if( !products[i].hasOwnProperty('product') || !products[i].hasOwnProperty('quantity')){
+                logger.error(`El producto debe tener un ID o una QUANTITY valida`)
                 return res.status(400).json({status: 'error', error: `El producto debe tener un ID o una QUANTITY valida` })
             }
             if( typeof products[i].quantity !== 'number'){
                 return res.status(400).json({status: 'error', error: `El Quantity debe ser un numero` })
             }
             if( products[i].quantity === 0){
+                logger.error(`Debe agregar una Quantity mayor a cero`)
                 return res.status(400).json({status: 'error', error: `Debe agregar una Quantity mayor a cero` })
             }
             const productToAdd = await getProductByIdService(products[i].product)
             if( productToAdd === null){
+                logger.error(`El Producto con el ID ${id} NO SE ENCONTRÓ`)
                 return res.status(400).json({status: 'error', error: `El producto con el ID: ${id} no existe` })
             }
         }
@@ -165,11 +169,13 @@ export const updateProductToCartController = async (req, res) => {
     try {
         const cart = await getCartByIdServices(cartId);
         if (!cart) {
+            logger.error(`El Carrito con el ID ${id} NO SE ENCONTRÓ`)
             return res.status(404).json({ status: 'error', error: `El Carrito con el ID ${cartId} NO SE ENCONTRÓ` });
         }
 
         const product = await getProductByIdService(productId);
         if (!product) {
+            logger.error(`El Producto con el ID ${productId} NO SE ENCONTRÓ`)
             return res.status(404).json({ status: 'error', error: `El Producto con el ID ${productId} NO SE ENCONTRÓ` });
         }
 
@@ -203,6 +209,7 @@ export const deleteProductsFromCartController = async (req, res) => {
         const id = req.params.cid
         const cart = await getCartByIdServices(id)
         if (!cart) {
+            logger.error(`El Carrito con el ID ${id} NO SE ENCONTRÓ`)
             return res.status(404).json({ status: 'error', error: `El Carrito con el ID ${id} NO SE ENCONTRÓ` });
         }
 

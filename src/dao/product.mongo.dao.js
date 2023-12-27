@@ -1,5 +1,6 @@
 import productModel from "./models/product.model.js";
 import { PORT } from "../app.js"
+import logger from "../logger.js";
 
 export default class ProductMongoDAO {
     getAllProducts = async() => await productModel.find().lean().exec()
@@ -68,6 +69,7 @@ export default class ProductMongoDAO {
             }
 
         } catch(err) {
+            logger.error("getAllPaginatedProducts: ", err.message)
             return {
                 statusCode: 500,
                 response: { status: 'error', error: err.message }

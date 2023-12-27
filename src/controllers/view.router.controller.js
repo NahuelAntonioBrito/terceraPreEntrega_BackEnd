@@ -34,6 +34,7 @@ export const viewProductsController = async (req, res) => {
             }
         })
     }else{
+        logger.error("viewProducts: ", result.response.error);
         res.status(result.statuscode).json({status: 'error', error: result.response.error})
     }
 }
@@ -44,6 +45,7 @@ export const realTimeProductsController = async (req, res) => {
     if( result.statuscode === 200){
         res.render('realTimeProducts', { products: result.response.payload })
     }else{
+        logger.error("realTimeProducts: ", result.response.error);
         res.status(result.statuscode).json({status: 'error', error: result.response.error})
     }
     
@@ -55,6 +57,7 @@ export const viewCartController = async(req, res) => {
     if( result.statusCode === 200){
         res.render('productsFromCart', { cart: result.response.payload })
     }else{
+        logger.error("viewCart: ", result.response.error);
         res.status(result.statusCode).json({status: 'error', error: result.response.error})
     }
 }
