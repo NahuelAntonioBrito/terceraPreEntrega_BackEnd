@@ -1,10 +1,12 @@
+<link rel="stylesheet" href="/css/styles.css">
 <div>
 
     <h1>Bienvenido, {{getPrototypeProperty user "firstName"}} {{getPrototypeProperty user "lastName"}}</h1>
 
     <section>
-        <a href="/profile">{{getPrototypeProperty user "email"}}</a>
-        <a href="/api/sessions/logout">LOGOUT</a>
+        <a href="/profile"><img src="../img/user.png" alt="user" class="userImage"></a>
+        <a href="/api/sessions/logout"><img src="../img/logout.png" alt="logout" class="userImage"></a>
+        <a href="/products/{{getPrototypeProperty user "cart"}}"><img src="../img/carrito-de-compras.png" alt="carritoDeCompras" class="cartImage"></a>
     </section>
 
     <h2>Products</h2>
@@ -26,45 +28,25 @@
             </li>
         </ul>
     </nav>
-
-    <table class="table table-hover">
-        <tr>
-            <td></td>
-            <td>Titulo</td>
-            <td>Descripción</td>
-            <td>Precio</td>
-            <td>Codigo</td>
-            <td>Categoría</td>
-            <td>Stock</td>
-        </tr>
-        {{#each products}}
-        <tr>
-            <td><button type="button" class="btn btn-success" onclick="addProductToCart('{{this._id}}', '{{user.cart}}')">Añadir</button></td>
-            <td>{{ this.title }}</td>
-            <td>{{ this.description }}</td>
-            <td>{{ this.price }}</td>
-            <td>{{ this.code }}</td>
-            <td>{{ this.category }}</td>
-            <td>{{ this.stock }}</td>
-        </tr>
-        {{/each}}
-    </table>
 </div>
 
+<div class="card">
+    {{#each products}}
+        <div class="card-item">
+            <img src="{{this.thumbnails.[0]}}" alt="{{this.title}}" class="card-image">
+        <div class="card-content">
+        <h2>{{this.title}}</h2>
+        <p class="description">{{this.description}}</p>
+        <p class="price">$ {{this.price}}</p>
+        <p class="category">{{this.category}}</p>
+        <button type="button" class="btn btn-success" onclick="addProductToCart('{{this._id}}', '{{user.cart}}')">Añadir</button>
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+
 <script>
-    console.log("User in Handlebars:", {
-    _id: '{{getPrototypeProperty user "_id"}}',
-    firstName: '{{getPrototypeProperty user "firstName"}}',
-    lastName: '{{getPrototypeProperty user "lastName"}}',
-    email: '{{getPrototypeProperty user "email"}}',
-    age: '{{getPrototypeProperty user "age"}}',
-    password: '{{getPrototypeProperty user "password"}}',
-    cart: '{{getPrototypeProperty user "cart"}}',
-    role: '{{getPrototypeProperty user "role"}}',
-
-});
-
-
     addProductToCart = (pid) => {
         console.log(pid)
         const cid = '{{getPrototypeProperty user "cart"}}';

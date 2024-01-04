@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon ."
+    "dev": "nodemon --experimental-specifier-resolution=node ."
   },
   "keywords": [],
   "author": "",

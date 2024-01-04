@@ -57,7 +57,6 @@ app.engine('handlebars', handlebars.engine({
 }));
 app.set('views', './src/views');
 app.set('view engine', 'handlebars');
-
 app.use(session({
     secret: process.env.SECRET,
     resave: true,
@@ -70,6 +69,7 @@ app.use(passport.session())
 app.use(cookieParser())
 app.use(express.urlencoded({extended: true}))
 app.use(express.json());
+app.use(express.static('public'));
 app.use(express.static(__dirname+"/public"));
 app.use('/', sesssionViewRouter);
 app.use('/api/products', productsRouter);

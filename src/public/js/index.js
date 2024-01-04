@@ -1,4 +1,4 @@
-import logger from "../../logger.js";
+import logger from '../../logger.js'
 
 const socket = io()
 
@@ -16,7 +16,7 @@ document.getElementById('createBtn').addEventListener('click', () => {
         category: document.getElementById('category').value,
     };
 
-    logger.info(body);
+    console.log(body);
 
     fetch('/api/products', {
         method: 'post',
