@@ -94,9 +94,10 @@ try{
     io.on("connection", (socket) => {
         logger.info(`New Client Connected`)
         socket.on('productList', (data) => {
+            console.log("data: ", data)
             if (data) {
                 io.emit('updateProducts', data);
-                logger.info('Datos enviados al cliente:', data);
+                console.log('Datos enviados al cliente:', data);
             } else {
                 logger.error('Los datos de productos están vacíos o nulos');
             }

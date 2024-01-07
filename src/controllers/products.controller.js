@@ -1,8 +1,10 @@
 import { addProductService, deleteProductService, getProductByIdService, getProductsService, updateProductService } from "../services/products.services.js";
+import { ProductService } from '../services/repositories/index.js'
 import logger from "../logger.js";
 
 export const getProductController = async (req, res) => {
-    const result = await getProductsService(req, res)
+    const result = await ProductService.getAllPaginatedProducts( req );
+    console.log("getProductController: ", result)
     res.status(result.statuscode).json(result.response)
 }
 
@@ -24,17 +26,20 @@ export const getProductByIdController = async (req, res) => {
     }
 }
 
-export const addProductController = async( req, res) =>{
+export const addProductController = async (req, res) => {
     const product = req.body;
-    const productAdd = await addProductService(product);
+
     try {
+        const productAdd = await addProductService(product);
         await productAdd.save();
+        console.log({ status: 'success', payload: productAdd });
         res.json({ status: 'success', payload: productAdd });
     } catch (err) {
         logger.error('Error al guardar el producto:', err);
         res.status(500).json({ status: 'error', error: 'No se pudo agregar el producto' });
     }
-}
+};
+
 
 export const updateProductController = async (req, res) => {
     const id = req.params.pid;

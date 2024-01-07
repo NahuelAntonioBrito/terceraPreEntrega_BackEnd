@@ -1,7 +1,12 @@
 import { ProductService } from './repositories/index.js'
 
+export const getProducts = async (req, res) => {
+    const products  = await ProductService.getAllProducts( req )
+    return products
+}
+
 export const getProductsService = async (req, res) => {
-    const products = await ProductService.getAllPaginetedProducts( req )
+    const products = await ProductService.getAllPaginatedProducts( req )
     return products
 }
 
