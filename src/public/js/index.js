@@ -1,8 +1,8 @@
 
 const socket = io();
-
 const table = document.getElementById('realTimeProducts');
 console.log('recibe datos');
+
 document.getElementById('createBtn').addEventListener('click', async () => {
     const body = {
         title: document.getElementById('title').value,
@@ -18,38 +18,49 @@ document.getElementById('createBtn').addEventListener('click', async () => {
     console.log(body);
 
     try {
-        fetch('/api/products', {
+        const response = await fetch('/api/products', {
             method: 'post',
             body: JSON.stringify(body),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-        })
-            .then(result => result.json())
-            .then(result => {
-                if (result.status === 'error') throw new Error(result.error)
-            })
-            .then(() => fetch('/api/products'))
-            .then(result => result.json())
-            .then(result => {
-                if (result.status === 'error') throw new Error(result.error)
-                console.log('productList: ', result.payload)
-                socket.emit('productList', result.payload);
-                socket.emit('productList', result.payload)
-                alert(`Ok. Todo salió bien! :)\nEl producto se ha agregado con éxito!\n\nVista actualizada!`)
-                document.getElementById('title').value = ''
-                document.getElementById('description').value = ''
-                document.getElementById('price').value = ''
-                document.getElementById('code').value = ''
-                document.getElementById('stock').value = ''
-                document.getElementById('category').value = ''
-            })
+            credentials: 'include',
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'error') {
+            throw new Error(result.error);
+        }
+
+        const productListResponse = await fetch('/api/products/noPaginate', {
+            credentials: 'include',
+        });
+
+        const productListResult = await productListResponse.json();
+
+        console.log('Respuesta de /api/products/noPaginate:', productListResult);
+
+        if (productListResult.status === 'error') {
+            throw new Error(productListResult.error);
+        }
+
+        socket.emit('productList', productListResult);
+
+        alert('Ok. Todo salió bien! :)\nEl producto se ha agregado con éxito!\n\nVista actualizada!');
         
+        // Limpiar campos después de agregar el producto
+        document.getElementById('title').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('price').value = '';
+        document.getElementById('code').value = '';
+        document.getElementById('stock').value = '';
+        document.getElementById('category').value = '';
+
     } catch (err) {
-        console.log('Error:', err);
+        console.error('Error:', err);
         alert(`Hubo un error al procesar la solicitud. Detalles: ${err.message}`);
     }
-    
 });
 
 
@@ -102,5 +113,4 @@ socket.on('updateProducts', (data) => {
         console.log('Los datos recibidos no son un iterable válido o son nulos:', data);
     }
 })
-
 

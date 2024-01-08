@@ -1,13 +1,14 @@
 import { Router } from 'express';
-import { getProductController, getProductByIdController, addProductController, updateProductController, deleteProductController} from '../controllers/products.controller.js';
+import { getProductPaginatedController, getProductController, getProductByIdController, addProductController, updateProductController, deleteProductController} from '../controllers/products.controller.js';
 import { handlePolicies, publicRoutes } from '../middlewares/auth.middleware.js';
 
 
 const router = Router();
 
 
-router.get('/', getProductController);
+router.get('/', handlePolicies(['USER', 'ADMIN']), getProductPaginatedController);
 
+router.get('/noPaginate', handlePolicies(['USER', 'ADMIN']), getProductController);
 
 router.get('/:pid', handlePolicies(['USER', 'ADMIN']), getProductByIdController);
 

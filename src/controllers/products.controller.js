@@ -2,10 +2,15 @@ import { addProductService, deleteProductService, getProductByIdService, getProd
 import { ProductService } from '../services/repositories/index.js'
 import logger from "../logger.js";
 
-export const getProductController = async (req, res) => {
+export const getProductPaginatedController = async (req, res) => {
     const result = await ProductService.getAllPaginatedProducts( req );
-    console.log("getProductController: ", result)
+    console.log("getProductPaginatedController: ", result)
     res.status(result.statuscode).json(result.response)
+}
+
+export const getProductController = async (req, res) => {
+    const result = await ProductService.getAllProducts( req );
+    res.status(200).json(result)
 }
 
 export const getProductByIdController = async (req, res) => {

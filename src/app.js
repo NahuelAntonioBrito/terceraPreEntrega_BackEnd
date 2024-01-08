@@ -99,7 +99,7 @@ try{
                 io.emit('updateProducts', data);
                 console.log('Datos enviados al cliente:', data);
             } else {
-                logger.error('Los datos de productos están vacíos o nulos');
+                console.log('Los datos de productos están vacíos o nulos');
             }
         })
         socket.on('message', async (data) => {
