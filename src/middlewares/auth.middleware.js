@@ -10,14 +10,23 @@ export const publicRoutes = ( req, res, next ) =>{
     next()
 }
 
+export const handlePolicies = (policies) => (req, res, next) => {
+	const userRole = req.user && (req.user.user?.role || req.user.role);
 
-export const handlePolicies = policies => (req, res, next) => {
-    if (policies.includes('PUBLIC')) return next()
-    if (!req.user) return res.status(401).json({ status: 'error', error: 'You are not logged-in' })
-    if (policies.length > 0) {
-        console.log("role: ", req.user.user.role.toUpperCase())
-        if(!policies.includes(req.user.user.role.toUpperCase())) {
-            return res.status(403).json({ status: 'error', error: 'You are not authorized' })
+	if (policies.includes("PUBLIC")) return next();
+	if (!userRole)
+		return res
+			.status(401)
+			.json({ status: "error", error: "You are not logged in" });
+
+	if (policies.length > 0) {
+		console.log("role: ", userRole.toUpperCase());
+
+		if (!policies.includes(userRole.toUpperCase())) {
+			return res
+				.status(403)
+				.json({ status: "error", error: "You are not authorized" });
+            
         }
     }
     next()

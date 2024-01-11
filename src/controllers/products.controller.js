@@ -10,7 +10,7 @@ export const getProductPaginatedController = async (req, res) => {
 
 export const getProductController = async (req, res) => {
     const result = await ProductService.getAllProducts( req );
-    res.status(200).json(result)
+    res.json(result)
 }
 
 export const getProductByIdController = async (req, res) => {

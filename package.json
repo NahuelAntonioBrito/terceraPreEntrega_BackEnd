@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon --experimental-specifier-resolution=node ."
+    "dev": "nodemon --experimental-specifier-resolution=node .",
+    "test": "mocha test/supertest.spec.js"
   },
   "keywords": [],
   "author": "",
@@ -34,5 +35,10 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "chai": "^5.0.0",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }

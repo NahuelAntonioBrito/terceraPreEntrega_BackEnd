@@ -33,12 +33,9 @@ document.getElementById('createBtn').addEventListener('click', async () => {
             throw new Error(result.error);
         }
 
-        const productListResponse = await fetch('/api/products/noPaginate', {
-            credentials: 'include',
-        });
-
+        const productListResponse = await fetch('/api/products/noPaginate');
+        console.log(productListResponse)
         const productListResult = await productListResponse.json();
-
         console.log('Respuesta de /api/products/noPaginate:', productListResult);
 
         if (productListResult.status === 'error') {

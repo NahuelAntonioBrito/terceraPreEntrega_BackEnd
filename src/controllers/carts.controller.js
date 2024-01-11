@@ -29,7 +29,7 @@ export const getProductFromCart = async (req, res) =>{
 export const createCartController = async( req, res) =>{
     try{
         const cart = await createCartServices();
-        res.status(201).json({ status: 'success', payload: cart })
+        res.status(200).json({ status: 'success', payload: cart })
     }catch(err){
         logger.error("createCart: ", err.message)
         res.status(500).json({status: 'error', error: err.message});
@@ -42,7 +42,7 @@ export const getCartByIdController = async (req, res) => {
         logger.error("getCartById: ", err.message)
         res.status(404).json({status: 'error', error: 'No Se Encontro El Producto'});
     }else{
-        res.json({status: 'success', payload: cartId});
+        res.status(200).json({status: 'success', payload: cartId});
     }
 }
 
@@ -292,7 +292,7 @@ export const purchaseController = async (req, res) => {
                 amount,
                 purchaser: userEmail
             })
-        return res.status(201).json({ status: 'success', payload: result })
+        return res.status(200).json({ status: 'success', payload: result })
     }catch(err){
         logger.error("purchase: Error interno del servidor", err.message);
         return res.status(500).json({ status: 'error', error: err.message })

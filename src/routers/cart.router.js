@@ -5,23 +5,22 @@ import passport from 'passport';
 
 const router = Router();
 
-router.post('/', handlePolicies(['USER', 'ADMIN']), createCartController);
+router.post('/', passport.authenticate('current', { session: false }), handlePolicies(['USER', 'ADMIN']), createCartController);
 
-router.get('/:cid', handlePolicies(['USER', 'ADMIN']), getCartByIdController);
+router.get('/:cid', passport.authenticate('current', { session: false }), handlePolicies(['USER', 'ADMIN']), getCartByIdController);
 
-router.post('/:cid/product/:pid', addProductToCartController);
+router.post('/:cid/product/:pid', passport.authenticate('current', { session: false }), addProductToCartController);
 
-router.delete('/:cid/product/:pid', handlePolicies(['USER', 'ADMIN']), deleteProductToCart);
+router.delete('/:cid/product/:pid', passport.authenticate('current', { session: false }), handlePolicies(['USER', 'ADMIN']), deleteProductToCart);
 
-router.put('/:cid', handlePolicies(['USER']), addProductsToCartController);
+router.put('/:cid', passport.authenticate('current', { session: false }), handlePolicies(['USER']), addProductsToCartController);
 
-router.put('/:cid/product/:pid', handlePolicies(['USER', 'ADMIN']), updateProductToCartController);
+router.put('/:cid/product/:pid', passport.authenticate('current', { session: false }), handlePolicies(['USER', 'ADMIN']), updateProductToCartController);
 
-router.delete('/:cid', handlePolicies(['USER', 'ADMIN']), deleteProductsFromCartController);
+router.delete('/:cid', passport.authenticate('current', { session: false }), handlePolicies(['USER', 'ADMIN']), deleteProductsFromCartController);
 
 
-router.get('/:cid/purchase', passport.authenticate('jwt', { session: false }), purchaseController);
-
+router.get('/:cid/purchase', passport.authenticate('current', { session: false }), passport.authenticate('jwt', { session: false }), purchaseController);
 
 
 

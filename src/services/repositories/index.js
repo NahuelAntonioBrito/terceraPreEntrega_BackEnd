@@ -2,7 +2,6 @@ import { Product } from '../../dao/factory.js';
 import ProductRepository from './product.repository.js';
 import config from '../../config/config.js';
 
-const productDAO = Product.create(config);
 
-const ProductService = new ProductRepository(productDAO)
-export { ProductService };
+const productDAO = Product.create(config);
+export const ProductService = new ProductRepository(productDAO)
