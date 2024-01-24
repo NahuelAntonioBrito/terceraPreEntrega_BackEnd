@@ -31,6 +31,14 @@ hbs.handlebars.registerHelper('getPrototypeProperty', function(user, propertyNam
     return user[propertyName];
 });
 
+hbs.handlebars.registerHelper('range', function (start, end) {
+    const result = [];
+    for (let i = start; i <= end; i++) {
+        result.push(i);
+    }
+    return result;
+});
+
 
 const MONGO_URI = process.env.MONGO_URI
 export const PORT = process.env.PORT
@@ -82,6 +90,11 @@ app.use('/carts', viewsRouter);
 app.use('/chat', chatRouter);
 app.use('/api/mockingproducts', mockingRouter)
 app.use('/loggerTest', loggertest)
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Error interno del servidor');
+});
+
 
 try{
     await mongoose.connect(MONGO_URI,{
@@ -94,10 +107,9 @@ try{
     io.on("connection", (socket) => {
         logger.info(`New Client Connected`)
         socket.on('productList', (data) => {
-            console.log("data: ", data)
             if (data) {
                 io.emit('updateProducts', data);
-                console.log('Datos enviados al cliente:', data);
+                //console.log('Datos enviados al cliente:', data);
             } else {
                 console.log('Los datos de productos están vacíos o nulos');
             }

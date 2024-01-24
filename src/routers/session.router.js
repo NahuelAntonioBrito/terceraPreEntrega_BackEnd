@@ -76,4 +76,14 @@ router.post('/reset-password/:user', async (req, res) => {
     }
 })
 
+router.get('/premium/:uid', async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.params.uid)
+        await UserModel.findByIdAndUpdate(req.params.uid, { role: user.role === 'user' ? 'premium' : 'user' })
+        res.json({ status: 'success', message: 'Se ha actualizado el rol del usuario' })
+    } catch(err) {
+        res.json({ status: 'error', error: err.message })
+    }
+})
+
 export default router

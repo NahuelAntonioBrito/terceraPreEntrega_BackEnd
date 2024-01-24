@@ -19,7 +19,7 @@ export const viewProductsController = async (req, res) => {
         }
         const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
-        const user = req.user;
+        const user = req.user.user;
 
         res.render('home',{ user,
             products: result.response.payload,
@@ -52,6 +52,7 @@ export const realTimeProductsController = async (req, res) => {
 }
 
 export const viewCartController = async(req, res) => {
+    console.log("se consulto cart")
     const result = await getProductFromCart(req, res)
     logger.info("viewCart: ", result)
     if( result.statusCode === 200){

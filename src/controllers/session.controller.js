@@ -10,33 +10,43 @@ export const registerController = async(req, res) => {
 
 export const failRegisterController = (req, res) => res.send({ error: 'Passport register Failed'})
 
-export const loginController = async(req, res) => {
-    if(!req.user){
-        return res.status(400).send({ status:'error', error:'Invalid credentials'})
+export const loginController = async (req, res) => {
+    if (!req.user) {
+        return res.status(400).send({ status: 'error', error: 'Invalid credentials' });
     }
 
     res.cookie(JWT_COOKIE_NAME, req.user.token).redirect('/products');
-}
+};
 
 export const failLoginController = (req, res) => {
     if (!req.user) {
-        CustomError.createError({
+        const error = CustomError.createError({
             name: "Login  error",
             cause: generateErrorInfo(req.user),
             message: "Error trying to Login",
             code: EErros.LOGIN_ERROR
-        })
+        });
+
+        return res.status(500).send({ status: 'error', error: error.message });
     }
-}
+};
+
 
 export const logoutController = (req, res) => {
     res.clearCookie(JWT_COOKIE_NAME).redirect('/');
 }
 
-export const githubController = (reqe, res) => {}
+export const githubController = (req, res) => {}
 
-export const githubCallBackController = async( req, res) => {
-    logger.info('Callback: ', req.user )
-    req.session.user = req.user
-    res.redirect('/products')
-}
+export const githubCallBackController = async (req, res) => {
+    try {
+        if (req.user && req.user.token) {
+            res.cookie(JWT_COOKIE_NAME, req.user.token).redirect('/products');
+        } else {
+            throw new Error('Token not available after GitHub authentication.');
+        }
+    } catch (error) {
+        console.error("Error en githubCallBackController:", error);
+        res.status(500).json({ status: 'error', error: 'Internal Server Error' });
+    }
+};

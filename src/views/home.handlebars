@@ -18,7 +18,7 @@
                     <a class="page-link" href="{{paginateInfo.prevLink}}">Previous</a>
                 </li>
             {{/if}}
-            {{#each paginateInfo.totalPages}}
+            {{#each (range 1 paginateInfo.totalPages)}}
                 <li class="page-item">
                     <a class="page-link" href="{{this.link}}">{{this.page}}</a>
                 </li>
@@ -28,6 +28,8 @@
             </li>
         </ul>
     </nav>
+
+
 </div>
 
 <div class="card">
@@ -44,7 +46,6 @@
     </div>
     {{/each}}
 </div>
-
 
 <script>
     addProductToCart = (pid) => {

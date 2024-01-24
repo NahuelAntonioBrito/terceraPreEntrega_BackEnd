@@ -21,33 +21,20 @@ export default class ProductMongoDAO {
     
             const result = await productModel.paginate( filterOptions, paginateOptions )
     
-            //prevLink 
-    
-            let prevPageBaseURL = `http://${req.hostname}:${PORT}${req.originalUrl}`;
+            const basePageURL = `http://${req.hostname}:${PORT}/products`;
+
+        //prevLink
             let prevLink;
-    
             if (result.hasPrevPage) {
-    
-                const pageParam = `page=${result.prevPage}`;
-                if (prevPageBaseURL.includes('?')) {
-                    prevLink = `${prevPageBaseURL}&${pageParam}`;
-                } else {
-                    prevLink = `${prevPageBaseURL}?${pageParam}`;
-                }
+                prevLink = `${basePageURL}?page=${result.prevPage}`;
             } else {
                 prevLink = null; // No hay página anterior
             }
-    
-            //nextLink
-            let nextPageBaseURL = `http://${req.hostname}:${PORT}${req.originalUrl}`;
+
+        //nextLink
             let nextLink;
             if (result.hasNextPage) {
-                const pageParam = `page=${result.nextPage}`;
-                if (nextPageBaseURL.includes('?')) {
-                    nextLink = `${nextPageBaseURL}&${pageParam}`;
-                } else {
-                    nextLink = `${nextPageBaseURL}?${pageParam}`;
-                }
+                nextLink = `${basePageURL}?page=${result.nextPage}`;
             } else {
                 nextLink = null; // No hay página siguiente
             }

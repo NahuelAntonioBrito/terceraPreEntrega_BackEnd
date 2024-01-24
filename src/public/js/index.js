@@ -60,54 +60,44 @@ document.getElementById('createBtn').addEventListener('click', async () => {
     }
 });
 
-
-
 deleteProduct = (id) => {
     fetch(`/api/products/${id}`, {
         method: 'delete',
     })
-    .then(result => {
-        if (result.status === 'error') throw new Error(result.error)
-        return result.json(); // Asegúrate de analizar la respuesta como JSON
-    })
-    .then(data => {
-        socket.emit('productList', data.payload); // Emite el evento después de que la eliminación sea exitosa
-        console.log("se elimino correctamente");
-
-    })
-    .catch(err => logger.error(`Ocurrió un error: ${err}`));
+        .then(result => result.json())
+        .then(result => {
+            if (result.status === 'error') throw new Error(result.error)
+            socket.emit('productList', result.payload)
+            alert(`Ok. Todo salió bien! :)\nEl producto eliminado con éxito!`)
+        })
+        .catch(err => alert(`Ocurrió un error :(\n${err}`))
 }
 
 socket.on('updateProducts', (data) => {
-    // Verifica si data no es nulo y es un iterable (array)
-    console.log("data updateproducts cliente: ", data)
+    console.log("data updateproducts cliente: ", data);
+    const realTimeProducts = document.getElementById('realTimeProducts');
+
     if (data !== null && Array.isArray(data)) {
-        table.innerHTML = 
-            `<tr>
-                <td></td>
-                <td><strong>Producto</strong></td>
-                <td><strong>Descripción</strong></td>
-                <td><strong>Precio</strong></td>
-                <td><strong>Code</strong></td>
-                <td><strong>Stock</strong></td>
-                <td><strong>Categoría</strong></td>
-            </tr>`;
+        // Limpiar el contenido actual
+        realTimeProducts.innerHTML = '';
+
         for (const product of data) {
-            let tr = document.createElement('tr')
-            tr.innerHTML = `
-                <td><button class="btn btn-danger" onclick="deleteProduct(${product.id})">Eliminar</td> 
-                <td>${product.title}</td>
-                <td>${product.description}</td>
-                <td>${product.price}</td>
-                <td>${product.code}</td>
-                <td>${product.stock}</td>
-                <td>${product.category}</td>
-            `;
-            table.getElementsByTagName('tbody')[0].appendChild(tr);
+            let cardItem = document.createElement('div');
+            cardItem.className = 'card-item'; // Agrega la clase card
+
+            cardItem.innerHTML = `
+                    <img src="${product.thumbnails[0]}" alt="${product.title}" class="card-image">
+                <div class="card-content">
+                    <h2>${product.title}</h2>
+                    <p class="description">${product.description}</p>
+                    <p class="price">$ ${product.price}</p>
+                    <p class="category">${product.category}</p>
+                    <button class="btn btn-danger" onclick="deleteProduct('${product._id}')">Eliminar</button>
+                </div>`;
+
+            realTimeProducts.appendChild(cardItem);
         }
     } else {
-        // Maneja el caso en el que data no es un iterable válido o es nulo
         console.log('Los datos recibidos no son un iterable válido o son nulos:', data);
     }
-})
-
+});

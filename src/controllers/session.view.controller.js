@@ -10,7 +10,7 @@ export const getRegisterViewController = async(req, res) => {
 }
 
 export const getProfileViewController = async(req, res) => {
-    const userDto = new UserDTO(req.user);
+    const userDto = new UserDTO(req.user.user);
     if (!userDto) {
         logger.error("No se pudo autenticar al usuario.")
         return res.status(401).send("No se pudo autenticar al usuario.");

@@ -72,14 +72,15 @@ export const deleteProductController = async( req, res ) => {
         const deletProduct = await deleteProductService(id)
 
         if (deletProduct) {
-            res.json({ status: 'success', payload: deletProduct });
+            const products = await ProductService.getAllProducts()
+            res.status(200).json({ status: 'success', payload: products })
         } else {
             logger.error("deleteProduct: No se encontró el producto");
             res.status(404).json({ status: 'error', error: 'No se encontró el producto' });
         }
     } catch (err) {
         logger.error("deleteProduct: ", err.message);
-        res.status(500).json({ status: 'error', error: 'Error en la actualización del producto' });
+        res.status(500).json({ status: 'error', error: 'Error en la Eliminación del producto' });
     }
 
 }

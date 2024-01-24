@@ -15,7 +15,7 @@ const initializePassport = () => {
         passReqToCallback: true,
         usernameField:'email'
     }, async(req, username, password, done) => {
-        const{firstName, lastName, email, age } = req.body
+        const{firstName, lastName, email, age, role } = req.body
         try{
             const user = await userModel.findOne({ email: username})
             if (user) {
@@ -24,8 +24,7 @@ const initializePassport = () => {
             const cartNewUser = await cartModel.create({})
             const newUser = {
                 firstName, lastName, email, age, password:crateHash(password), cart: cartNewUser._id,
-                role: email === "adminCoder@coder.com" ? "admin" : "user"
-
+                role
             }
 
             const result = await userModel.create(newUser)
@@ -56,30 +55,49 @@ const initializePassport = () => {
     passport.use('github', new GitHubStrategy({
         clientID: 'Iv1.7c072ec6d6d9bc50',
         clientSecret: '6290637406d668a37b9e8d5449c5b3d3027d0514',
-        callbackURL: 'http://localhost:8080/session/githubcallback'
-    }, async (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
+        callbackURL: 'http://localhost:8080/session/githubcallback',
+        scope: ["user:email"],
+		passReqToCallback: true,
+    }, async (req, accessToken, refreshToken, profile, done) => {
         try {
-            const user = await userModel.findOne({ email: profile._json.email });
-            if (user) {
-                return done(null, user);
+            const email = profile.emails[0].value;
+
+            const existingUser = await userModel.findOne({ email });
+
+            if (existingUser) {
+                const token = generateToken(existingUser);
+
+                existingUser.token = token;
+
+                req.session.cartID = existingUser.cart;
+                return done(null, existingUser);
             }
-    
-            const newUser = new userModel({
-                firstName: profile._json.name,
-                lastName: '',
-                email: profile._json.email,
-                age: '',
-                password: ''
+
+            const newCart = new cartModel({ userEmail: email, products: [] });
+
+            const newUser = await userModel.create({
+                first_name: profile._json.name,
+                last_name: "GitHub User",
+                email: email,
+                password: "github-user-password",
+                role: "user",
+                cart: newCart,
             });
-    
-            await newUser.save(); // Wait for the user to be saved
+
+            await newCart.save();
+            const token = generateToken(newUser);
+
+            newUser.token = token;
+
+
             return done(null, newUser);
-        } catch (err) {
-            logger.error("Error to login with GitHub ", err.message);
-            return done('Error to login with GitHub');
+        } catch (error) {
+            console.error("Error logging into GitHub:", error);
+            return done(error);
         }
-    }));
+    }
+)
+);
 
     passport.use('jwt', new JWTStrategy({
         jwtFromRequest: passportJWT.ExtractJwt.fromExtractors([extractCookie]),
@@ -93,7 +111,9 @@ const initializePassport = () => {
         secretOrKey: JWT_PRIVATE_KEY
     }, async (jwt_payload, done) => {
         try {
-            const user = await userModel.findById(jwt_payload.user._id)
+            const user = jwt_payload; // Accede directamente a la propiedad 'user'
+            console.log('current user: ', user);
+    
             if (!user) {
                 return done(null, false);
             }
@@ -105,8 +125,6 @@ const initializePassport = () => {
         }
     }));
     
-    
-
     passport.serializeUser((user, done) => {
         done(null, user._id)
     })
