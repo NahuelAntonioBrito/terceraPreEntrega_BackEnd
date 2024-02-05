@@ -1,4 +1,3 @@
-import { addProductService, deleteProductService, getProductByIdService, getProductsService, updateProductService } from "../services/products.services.js";
 import { ProductService } from '../services/repositories/index.js'
 import logger from "../logger.js";
 
@@ -17,7 +16,7 @@ export const getProductByIdController = async (req, res) => {
 
     try{
         const id = req.params.pid;
-        const productId = await getProductByIdService(id)
+        const productId = await ProductService.getProductById(id)
         if(!productId){
             logger.error("getProductById: No se encontró el producto");
             res.status(404).json({status: 'error', error: 'No Se Encontro El Producto'});
@@ -35,7 +34,8 @@ export const addProductController = async (req, res) => {
     const product = req.body;
 
     try {
-        const productAdd = await addProductService(product);
+        product.owner = req.user.user.email;
+        const productAdd = await ProductService.createProduct(product)
         await productAdd.save();
         console.log({ status: 'success', payload: productAdd });
         res.json({ status: 'success', payload: productAdd });
@@ -51,7 +51,17 @@ export const updateProductController = async (req, res) => {
     const productUpdates = req.body;
 
     try {
-        const updatedProduct = await updateProductService(id, productUpdates)
+
+        const  role  = req.user.user.role;
+        const  email  = req.user.user.email;
+		const isProductOwnerOrAdmin =
+			role === "admin" || email === productUpdates.owner;
+
+		if (!isProductOwnerOrAdmin) {
+			return res.status(403).json({ error: "Permission denied." });
+		}
+
+        const updatedProduct = await  ProductService.updateProduct(id, productUpdates)
 
         if (updatedProduct) {
             res.json({ status: 'success', payload: updatedProduct });
@@ -69,7 +79,15 @@ export const deleteProductController = async( req, res ) => {
     const id = req.params.pid;
 
     try {
-        const deletProduct = await deleteProductService(id)
+        const  role  = req.user.user.role;
+        console.log("deleteproduct controller role: ",  role )
+		const isAdmin = role === "admin" || role === "premium";
+
+		if (!isAdmin) {
+			return res.status(403).json({ error: "Permission denied." });
+		}
+
+        const deletProduct = await ProductService.deleteProduct(id)
 
         if (deletProduct) {
             const products = await ProductService.getAllProducts()

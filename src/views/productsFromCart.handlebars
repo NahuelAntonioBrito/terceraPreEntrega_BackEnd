@@ -11,16 +11,34 @@
         </tr>
     </thead>
     <tbody>
-    {{#each cart.products}}
+        {{#each cart}}
+            <tr>
+                <td>{{ title }}</td>
+                <td>{{ description }}</td>
+                <td>{{ price }}</td>
+                <td>{{ code }}</td>
+                <td>{{ category }}</td>
+                <td>{{ stock }}</td>
+                <td>{{ quantity }}</td>
+            </tr>
+        {{/each}}
         <tr>
-            <td>{{ this.product.title }}</td>
-            <td>{{ this.product.description }}</td>
-            <td>{{ this.product.price }}</td>
-            <td>{{ this.product.code }}</td>
-            <td>{{ this.product.category }}</td>
-            <td>{{ this.product.stock }}</td>
-            <td {{ this.product.quantity }}></td>
+            <td>Total</td>
+            <td>{{totalAmount}}</td>
         </tr>
-    {{/each}}
     </tbody>
+
 </table>
+<button id="checkout">Finalizar Compra</button>
+
+<script>
+    const button = document.getElementById('checkout')
+    button.addEventListener('click', async() => {
+        const res = await fetch('/pay/create-checkout-session', {
+            method: 'POST'
+        })
+        const data = await res.json()
+        // console.log(data)
+        window.location.href = data.url
+    })
+</script>

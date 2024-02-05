@@ -1,8 +1,7 @@
 import cartModel from "../dao/models/ticket.model.js"
-import { createCartServices, getCartByIdServices, getProductFromCartServices } from "../services/carts.services.js"
-import { getProductByIdService } from "../services/products.services.js";
 import ticketModel from "../dao/models/ticket.model.js"
 import { ProductService } from '../services/repositories/index.js'
+import { CartService } from '../services/repositories/index.js'
 import shortid from "shortid"
 import mongoose from "mongoose";
 import logger from "../logger.js";
@@ -10,13 +9,14 @@ import logger from "../logger.js";
 export const getProductFromCart = async (req, res) =>{
     try{
         const id = req.params.cid
-        const result = await getProductFromCartServices(id)
+        const result = await CartService.getCartById(id)
         if(result === null){
             return{
                 statusCode: 404,
                 response:{ status: 'error', error: "Carrito no encontrado"}
             }
         }
+        console.log("getproducts: ", result)
         return{
             statusCode: 200,
             response:{ status: 'success', payload: result}
@@ -28,7 +28,7 @@ export const getProductFromCart = async (req, res) =>{
 
 export const createCartController = async( req, res) =>{
     try{
-        const cart = await createCartServices();
+        const cart = await CartService.createCart()
         res.status(200).json({ status: 'success', payload: cart })
     }catch(err){
         logger.error("createCart: ", err.message)
@@ -51,14 +51,15 @@ export const addProductToCartController =async (req, res) => {
     const productId = req.params.pid;
 
     try {
-        const cart = await getCartByIdServices(cartId);
-
+        const cart = await CartService.getCartById(cartId)
+        console.log("cart: ", cart)
         if (!cart) {
             logger.error("addProductToCart: ", `El Carrito con el ID ${cartId} NO SE ENCONTRÓ`)
             return res.status(404).json({ status: 'error', error: `El Carrito con el ID ${cartId} NO SE ENCONTRÓ` });
         }
 
-        const product = await getProductByIdService(productId);
+        const product = await ProductService.getProductById(productId)
+        console.log("product: ", product)
 
         if (!product) {
             logger.error("addProductToCart: ", `El Producto con el ID ${productId} NO SE ENCONTRÓ`)
@@ -68,18 +69,26 @@ export const addProductToCartController =async (req, res) => {
         const existingProduct = cart.products.find(item => item.product.equals(productId));
 
         if (existingProduct) {
-            
-            existingProduct.quantity++;
+            existingProduct.quantity = existingProduct.quantity + 1; // O existingProduct.quantity++
         } else {
-            
             cart.products.push({
                 product: productId,
                 quantity: 1, 
             });
         }
 
-        await cart.save();
 
+
+
+        try {
+            console.log("Tipo de cart antes de guardar:", typeof cart);
+            await cart.save();
+            console.log("Carrito guardado:", cart);
+
+        } catch (saveError) {
+            console.error("Error al guardar el carrito:", saveError);
+            return res.status(500).json({ status: 'error', error: 'Error al guardar el carrito' });
+        }
         return res.status(200).json({ status: 'success', message: 'Producto agregado al carrito', cart });
     } catch (err) {
         logger.error("addProductToCart: Error interno del servidor", err.message);
@@ -92,13 +101,13 @@ export const deleteProductToCart = async (req, res) => {
     const productId = req.params.pid;
 
     try {
-        const cart = await getCartByIdServices(cartId);
+        const cart = await CartService.getCartById(cartId);
 
         if (!cart) {
             return res.status(404).json({ status: 'error', error: `El Carrito con el ID ${cartId} NO SE ENCONTRÓ` });
         }
 
-        const product = await getProductByIdService(productId);
+        const product = await ProductService.getProductById(productId);
 
         if (!product) {
             return res.status(404).json({ status: 'error', error: `El Producto con el ID ${productId} NO SE ENCONTRÓ` });
@@ -124,7 +133,7 @@ export const deleteProductToCart = async (req, res) => {
 export const addProductsToCartController = async (req, res) => {
     try{
         const id = req.params.cid;
-        const cart = await getCartByIdServices(id)
+        const cart = await CartService.getCartById(id);
         if(cart === null){
             return res.status(404).json({status: 'error', error: `El Carrito con el ID ${id} NO SE ENCONTRÓ` })
         }
@@ -167,13 +176,13 @@ export const updateProductToCartController = async (req, res) => {
     const productId = req.params.pid;
 
     try {
-        const cart = await getCartByIdServices(cartId);
+        const cart = await CartService.getCartById(cartId);
         if (!cart) {
             logger.error(`El Carrito con el ID ${id} NO SE ENCONTRÓ`)
             return res.status(404).json({ status: 'error', error: `El Carrito con el ID ${cartId} NO SE ENCONTRÓ` });
         }
 
-        const product = await getProductByIdService(productId);
+        const product = await ProductService.getProductById(productId);
         if (!product) {
             logger.error(`El Producto con el ID ${productId} NO SE ENCONTRÓ`)
             return res.status(404).json({ status: 'error', error: `El Producto con el ID ${productId} NO SE ENCONTRÓ` });
@@ -207,7 +216,7 @@ export const updateProductToCartController = async (req, res) => {
 export const deleteProductsFromCartController = async (req, res) => {
     try {
         const id = req.params.cid
-        const cart = await getCartByIdServices(id)
+        const cart = await CartService.getCartById(id);
         if (!cart) {
             logger.error(`El Carrito con el ID ${id} NO SE ENCONTRÓ`)
             return res.status(404).json({ status: 'error', error: `El Carrito con el ID ${id} NO SE ENCONTRÓ` });
@@ -227,7 +236,7 @@ export const deleteProductsFromCartController = async (req, res) => {
 export const purchaseController = async (req, res) => {
     try{
             const cid = req.params.cid
-            const shoppingCart = await getCartByIdServices(cid)
+            const shoppingCart = await CartService.getCartById(cid);
             if (!shoppingCart) {
                 return res.status(404).json({ status: 'error', error: `El Carrito con el ID ${id} NO SE ENCONTRÓ` });
             }

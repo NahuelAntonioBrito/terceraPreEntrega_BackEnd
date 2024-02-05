@@ -13,6 +13,10 @@ import sesssionViewRouter from './routers/session.view.router.js';
 import viewsRouter from './routers/view.router.js';
 import chatRouter from './routers/chat.router.js';
 import loggertest from "./routers/loggerTest.router.js"
+import ticketRouter from "./routers/ticket.router.js"
+import ticketviewRouter from "./routers/ticket.view.router.js"
+import paymentsRouter from "./routers/payments.router.js"
+import userRouter from "./routers/user.router.js"
 import { __dirname, passportCall } from './utils.js';
 import messageModel from "./dao/models/message.model.js";
 import dotenv from "dotenv";
@@ -24,12 +28,20 @@ import  SwaggerUiExpress  from "swagger-ui-express";
 
 dotenv.config()
 
-const hbs = handlebars.create({});
+const hbs = handlebars.create({
+
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+    },
+});
 
 // Define un ayudante personalizado para acceder a propiedades del prototipo
-hbs.handlebars.registerHelper('getPrototypeProperty', function(user, propertyName) {
-    return user[propertyName];
+// Registro del helper en tu código
+hbs.handlebars.registerHelper('getPrototypeProperty', function(obj, propertyName) {
+    return obj[propertyName];
 });
+
 
 hbs.handlebars.registerHelper('range', function (start, end) {
     const result = [];
@@ -90,6 +102,10 @@ app.use('/carts', viewsRouter);
 app.use('/chat', chatRouter);
 app.use('/api/mockingproducts', mockingRouter)
 app.use('/loggerTest', loggertest)
+app.use('/api/ticket', ticketRouter)
+app.use('/ticket', ticketviewRouter)
+app.use('/pay', paymentsRouter)
+app.use('/api/users', userRouter)
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Error interno del servidor');

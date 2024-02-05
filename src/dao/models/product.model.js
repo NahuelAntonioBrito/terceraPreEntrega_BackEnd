@@ -15,6 +15,7 @@ const productSchema = new mongoose.Schema({
     code: {type: String, required: true},
     stock: {type: Number, required: true},
     category: {type: String, required: true},
+    owner: { type: String, required: true, default: 'admin', ref: "users" }
 })
 
 mongoose.set("strictQuery", false)

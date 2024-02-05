@@ -20,8 +20,11 @@ export const viewProductsController = async (req, res) => {
         const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
         const user = req.user.user;
+        const cartId = req.user.user.cart
+        console.log(cartId)
 
         res.render('home',{ user,
+            cartId,
             products: result.response.payload,
             paginateInfo: {
                 hasPrevPage: result.response.hasPrevPage,
@@ -51,14 +54,29 @@ export const realTimeProductsController = async (req, res) => {
 
 }
 
-export const viewCartController = async(req, res) => {
-    console.log("se consulto cart")
-    const result = await getProductFromCart(req, res)
-    logger.info("viewCart: ", result)
-    if( result.statusCode === 200){
-        res.render('productsFromCart', { cart: result.response.payload })
-    }else{
+export const viewCartController = async (req, res) => {
+    console.log("se consulto cart");
+    const result = await getProductFromCart(req, res);
+    console.log(result);
+    if (result && result.response.status === 'success') {
+        const { payload: { products } } = result.response;
+
+        const simplifiedProducts = products.map(p => ({ ...p.product.toObject(), quantity: p.quantity }));
+
+        // Calcular el total del monto
+        const totalAmount = simplifiedProducts.reduce((total, product) => {
+            return total + (product.price * product.quantity);
+        }, 0);
+
+        console.log("Total Amount:", totalAmount);
+
+        res.render('productsFromCart', { cart: simplifiedProducts, totalAmount });
+    } else {
         logger.error("viewCart: ", result.response.error);
-        res.status(result.statusCode).json({status: 'error', error: result.response.error})
+        res.status(result.statusCode).json({ status: 'error', error: result.response.error });
     }
 }
+
+
+
+

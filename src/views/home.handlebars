@@ -41,7 +41,8 @@
         <p class="description">{{this.description}}</p>
         <p class="price">$ {{this.price}}</p>
         <p class="category">{{this.category}}</p>
-        <button type="button" class="btn btn-success" onclick="addProductToCart('{{this._id}}', '{{user.cart}}')">Añadir</button>
+        <button type="button" class="btn btn-success" onclick="addProductToCart('{{this._id}}')">Añadir</button>
+
         </div>
     </div>
     {{/each}}
@@ -49,21 +50,34 @@
 
 <script>
     addProductToCart = (pid) => {
-        console.log(pid)
+        console.log(pid);
         const cid = '{{getPrototypeProperty user "cart"}}';
-        console.log(cid)
+        console.log(cid);
+
         fetch(`/api/cart/${cid}/product/${pid}`, {
             method: 'post'
         })
         .then(result => {
-            console.log("Respuesta del servidor:", result)})
-        .then(result => result.json())
+            console.log("Respuesta del servidor:", result);
+            // Verificar si la respuesta es exitosa (código 200)
+            if (!result.ok) {
+                throw new Error(`Error en la solicitud: ${result.status} - ${result.statusText}`);
+            }
+            // Devolver el resultado en formato JSON
+            return result.json();
+        })
         .then(result => {
-            if (result.status === 'error') throw new Error(result.error)
-            alert(`Ok. Todo salió bien! :)\nEl producto se agregó al carrito con id=${result.payload._id}!`)
+            console.log("result: ", result);
+            // Verificar si 'status' es 'success' y 'cart' está presente
+            if (result.status === 'success' && result.cart) {
+                alert(`Ok. Todo salió bien! :)\nEl producto se agregó al carrito con id=${result.cart._id}!`);
+            } else {
+                throw new Error('La respuesta del servidor no tiene un formato esperado');
+            }
         })
         .catch(err => {
-            console.log(`Ocurrió un error :(\n${err}`)
-        })
+            console.log(`Ocurrió un error :(\n${err}`);
+        });
     }
 </script>
+
