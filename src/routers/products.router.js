@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { getProductPaginatedController, getProductController, getProductByIdController, addProductController, updateProductController, deleteProductController} from '../controllers/products.controller.js';
 import { handlePolicies, publicRoutes } from '../middlewares/auth.middleware.js';
 import passport from 'passport';
-
+import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
 

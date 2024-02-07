@@ -1,15 +1,20 @@
-import { UserService } from "../services/repositories";
+import { UserService } from "../services/repositories/index.js";
+import UserDTO from "../dto/user.dto.js"
 import logger from '../logger.js';
 
 export const getUsersController = async (req, res) => {
-	try {
-		const users = await UserService.getAll();
-		res.status(200).json(users);
-	} catch (error) {
-		logger.error("Error:", error);
-		res.status(500).json({ error: "Internal server error" });
-	}
+    try {
+        const users = await UserService.getAll();
+
+        const usersDTO = users.map(user => new UserDTO(user));
+
+        res.status(200).json(usersDTO);
+    } catch (error) {
+        logger.error("Error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
 };
+
 
 export const getUsertByIdController = async (req, res) => {
 	try {
@@ -74,34 +79,32 @@ export const updateUser = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-	let deletedUser;
-	try {
-		const id = req.params.uid;
-		deletedUser = await UserService.delete(id);
+    let deletedUsers;
+    try {
+        deletedUsers = await UserService.deleteInactiveUsers();
 
-		if (!deletedUser) {
-			return res.status(404).json({ error: `User with ID ${id} not found.` });
-		}
+        if (deletedUsers.length === 0) {
+            return res.status(204).json({ message: "No inactive users found" });
+        }
 
-		res.status(200).json({
-			message: "User deleted successfully.",
-			ticketDeleted: deletedUser,
-		});
-	} catch (error) {
-		logger.error("Error deleting User:", error.message);
-		res.status(500).json({ error: error.message });
-	} finally {
-		if (deletedUser) {
-			logger.http(`User with ID ${deletedUser._id} deleted:`);
-			logger.warning(deletedUser);
-		}
-	}
+        res.status(200).json({
+            message: "Inactive users deleted successfully.",
+            deletedUsers: deletedUsers,
+        });
+    } catch (error) {
+        logger.error("Error deleting inactive users:", error.message);
+        res.status(500).json({ error: error.message });
+    } finally {
+        if (deletedUsers) {
+            logger.info("Deleted inactive users:", deletedUsers);
+        }
+    }
 };
+
 
 export const getAdminsController = async ( req, res ) => {
 	try {
 		const adminUsers = await UserService.getAllAdminUsers();
-		console.log(adminUsers)
 		res.status(200).json(adminUsers);
 	} catch (error) {
 		logger.error("Error to get admin user:", error.message);

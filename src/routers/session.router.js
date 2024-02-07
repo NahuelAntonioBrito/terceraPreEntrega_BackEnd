@@ -19,7 +19,7 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/session
 
 router.get('/failLogin', failLoginController)
 
-router.get('/logout', logoutController);
+router.get('/logout', passport.authenticate('current', { session: false }), logoutController);
 
 router.get('/github', passport.authenticate('github', { scope: ['user: email']}), githubController)
 
@@ -71,16 +71,6 @@ router.post('/reset-password/:user', async (req, res) => {
         await UserModel.findByIdAndUpdate(user._id, { password: createHash(req.body.newPassword) })
         res.json({ status: 'success', message: 'Se ha creado una nueva contraseña' })
         await UserPasswordModel.deleteOne({ email: req.params.user })
-    } catch(err) {
-        res.json({ status: 'error', error: err.message })
-    }
-})
-
-router.get('/premium/:uid', async (req, res) => {
-    try {
-        const user = await UserModel.findById(req.params.uid)
-        await UserModel.findByIdAndUpdate(req.params.uid, { role: user.role === 'user' ? 'premium' : 'user' })
-        res.json({ status: 'success', message: 'Se ha actualizado el rol del usuario' })
     } catch(err) {
         res.json({ status: 'error', error: err.message })
     }

@@ -17,6 +17,7 @@ import ticketRouter from "./routers/ticket.router.js"
 import ticketviewRouter from "./routers/ticket.view.router.js"
 import paymentsRouter from "./routers/payments.router.js"
 import userRouter from "./routers/user.router.js"
+import documentsRouter from "./routers/documents.router.js"
 import { __dirname, passportCall } from './utils.js';
 import messageModel from "./dao/models/message.model.js";
 import dotenv from "dotenv";
@@ -106,6 +107,7 @@ app.use('/api/ticket', ticketRouter)
 app.use('/ticket', ticketviewRouter)
 app.use('/pay', paymentsRouter)
 app.use('/api/users', userRouter)
+app.use('/documents', documentsRouter)
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Error interno del servidor');

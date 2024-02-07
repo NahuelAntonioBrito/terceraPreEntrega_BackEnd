@@ -1,0 +1,16 @@
+<h1>Subir archivos</h1>
+
+<form action="/api/users/{{userId}}/documents" method="post" enctype="multipart/form-data">
+    <label for="file">Selecciona un archivo:</label>
+    <input type="file" name="file" id="file" />
+
+    <label for="fileType">Selecciona el tipo de archivo:</label>
+    <select name="fileType" id="fileType">
+        <option value="document">Documento</option>
+        <option value="profileImage">Imagen de Perfil</option>
+        <option value="productImage">Imagen de Producto</option>
+    </select>
+
+    <input type="submit" value="Subir Archivo" />
+</form>
+

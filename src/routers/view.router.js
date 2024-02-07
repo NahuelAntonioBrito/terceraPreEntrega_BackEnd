@@ -5,11 +5,10 @@ import { publicRoutes, handlePolicies } from '../middlewares/auth.middleware.js'
 
 const router = Router();
 
-router.get('/' , publicRoutes, handlePolicies(['USER', 'ADMIN']),passport.authenticate('current', { session: false }), viewProductsController)
+router.get('/' , publicRoutes, handlePolicies(['USER', 'ADMIN', 'PREMIUM']),passport.authenticate('current', { session: false }), viewProductsController)
 
-router.get('/realTimeProducts', handlePolicies(['USER', 'ADMIN']), realTimeProductsController)
+router.get('/realTimeProducts', handlePolicies(['USER', 'ADMIN', 'PREMIUM']), realTimeProductsController)
 
-router.get('/:cid', handlePolicies(['USER', 'ADMIN']), viewCartController)
-
+router.get('/:cid', handlePolicies(['USER', 'ADMIN', 'PREMIUM']), viewCartController)
 
 export default router
