@@ -43,4 +43,6 @@ export default class UserMongoDAO {
 
         return deletedUsers;
     };
+	getByEmail = async (email) => await userModel.findOne({ email });
+
 }

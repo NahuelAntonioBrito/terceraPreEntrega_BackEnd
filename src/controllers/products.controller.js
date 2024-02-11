@@ -1,5 +1,8 @@
 import { ProductService } from '../services/repositories/index.js'
 import logger from "../logger.js";
+import nodemailer from 'nodemailer';
+import Mailgen from "mailgen";
+import config from '../config/config.js';
 
 export const getProductPaginatedController = async (req, res) => {
     const result = await ProductService.getAllPaginatedProducts( req );
@@ -75,23 +78,66 @@ export const updateProductController = async (req, res) => {
     }
 }
 
-export const deleteProductController = async( req, res ) => {
-    const id = req.params.pid;
+export const deleteProductController = async (req, res) => {
+    const productId = req.params.pid;
 
     try {
-        const  role  = req.user.user.role;
-        console.log("deleteproduct controller role: ",  role )
-		const isAdmin = role === "admin" || role === "premium";
+        const role = req.user.user.role;
 
-		if (!isAdmin) {
-			return res.status(403).json({ error: "Permission denied." });
-		}
+        console.log("delete product user: ", role)
+        const isAdminOrPremium = role === "admin" || role === "premium";
 
-        const deletProduct = await ProductService.deleteProduct(id)
+        if (!isAdminOrPremium) {
+            return res.status(403).json({ error: "Permission denied." });
+        }
 
-        if (deletProduct) {
-            const products = await ProductService.getAllProducts()
-            res.status(200).json({ status: 'success', payload: products })
+        const deletedProduct = await ProductService.deleteProduct(productId);
+
+        if (deletedProduct) {
+            const products = await ProductService.getAllProducts();
+
+            const productOwner = deletedProduct.owner;
+            console.log("productOwner: ", productOwner)
+
+            if (role === "premium") {
+                const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: { user: config.nodemailer.user, pass: config.nodemailer.pass },
+                    tls: {
+                        rejectUnauthorized: false,
+                    },
+                });
+                let Mailgenerator = new Mailgen({
+                    theme: "cerberus",
+                    product: {
+                        name: "Kame-house",
+                        link: "http://localhost:8080",
+                    },
+                });
+                let response = {
+                    body: {
+                        intro: `Estimado Usuario Premium,\n\nEl producto ${deletedProduct.title} ha sido eliminado.`,
+                        outro: "Sincerely,\nKame-house",
+                    },
+                };
+                let mail = Mailgenerator.generate(response);
+            
+                let message = {
+                    from: "Kame-House",
+                    to: productOwner,
+                    subject: `'Producto Eliminado'`,
+                    html: mail,
+                };
+            
+                try {
+                    await transporter.sendMail(message);
+                    console.log('Correo electrónico enviado con éxito');
+                } catch (error) {
+                    console.error('Error al enviar el correo electrónico:', error);
+                }
+            }
+
+            res.status(200).json({ status: 'success', payload: products });
         } else {
             logger.error("deleteProduct: No se encontró el producto");
             res.status(404).json({ status: 'error', error: 'No se encontró el producto' });
@@ -100,5 +146,4 @@ export const deleteProductController = async( req, res ) => {
         logger.error("deleteProduct: ", err.message);
         res.status(500).json({ status: 'error', error: 'Error en la Eliminación del producto' });
     }
-
-}
+};

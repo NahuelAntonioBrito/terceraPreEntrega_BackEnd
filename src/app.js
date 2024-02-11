@@ -11,12 +11,14 @@ import cartsRouter from './routers/cart.router.js';
 import sessionRouter from './routers/session.router.js';
 import sesssionViewRouter from './routers/session.view.router.js';
 import viewsRouter from './routers/view.router.js';
+import viewCartRouter from './routers/cart.view.router.js'
 import chatRouter from './routers/chat.router.js';
 import loggertest from "./routers/loggerTest.router.js"
 import ticketRouter from "./routers/ticket.router.js"
 import ticketviewRouter from "./routers/ticket.view.router.js"
 import paymentsRouter from "./routers/payments.router.js"
 import userRouter from "./routers/user.router.js"
+import userViewRouter from "./routers/user.view.router.js"
 import documentsRouter from "./routers/documents.router.js"
 import { __dirname, passportCall } from './utils.js';
 import messageModel from "./dao/models/message.model.js";
@@ -99,7 +101,7 @@ app.use('/api/sessions', sessionRouter);
 app.use('/session', sessionRouter);
 app.use(errorHandler)
 app.use('/products', passportCall('jwt'), viewsRouter);
-app.use('/carts', viewsRouter);
+app.use('/carts', viewCartRouter);
 app.use('/chat', chatRouter);
 app.use('/api/mockingproducts', mockingRouter)
 app.use('/loggerTest', loggertest)
@@ -107,6 +109,7 @@ app.use('/api/ticket', ticketRouter)
 app.use('/ticket', ticketviewRouter)
 app.use('/pay', paymentsRouter)
 app.use('/api/users', userRouter)
+app.use('/users', userViewRouter)
 app.use('/documents', documentsRouter)
 app.use((err, req, res, next) => {
     console.error(err.stack);

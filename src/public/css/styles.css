@@ -163,11 +163,12 @@
 
 .card {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 10px; 
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
 }
+
 .card-item {
-    width: 300px; 
+    width: 100%; /* Cambiado de 300px a 100% para que se ajuste al ancho de la cuadrícula */
     margin: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -176,12 +177,18 @@
 
 .card-image {
     width: 100%;
-    height: 200px; 
-    object-fit: cover; 
+    height: 200px;
+    object-fit: cover;
 }
 
 .card-content {
     padding: 15px;
+}
+.navbar {
+    margin-bottom: 20px;
+}
+.container-cart{
+    padding-left: 1200px;
 }
 
 .cartImage{
@@ -189,12 +196,72 @@
     height: 40px;
 }
 
-.userImage{
-    width: 50px;
-    height: 50px;
+.h1-bienvenido{
+    margin-top: 60px;
 }
 
 .thumbnail-image {
     width: 100px;
     height: 100px;
+}
+
+.e-comerce-logo{
+    width: 40px;
+}
+
+.h1-userControl{
+    text-align: center;
+    margin-top: 70px;
+}
+
+.userControlContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.select{
+    width: 100%;
+    padding: 10px;
+    font-family: 'calibri';
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #24303c;
+    color: white;
+}
+
+.selectOption{
+    font-size: 14px;
+}
+
+.select:focus {
+    outline: none;
+    border-color: #007bff; /* Cambia el color del borde al enfocar */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra al enfocar */
+}
+
+.uploadFileContainer{
+    margin-top: 70px;
+}
+
+.fileContainer{
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: block;
+    background-color: #24303c;
+}
+
+.inputFile{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #24303c;
+    cursor: pointer;
+    color: white;
+}
+
+.inputFile:hover {
+    background-color: #e0e0e0;
 }

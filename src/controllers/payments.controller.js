@@ -79,7 +79,7 @@ export const successController = async ( req, res ) => {
         
         console.log("simplifiedCart: ", simplifiedCart)
         const cartClear = await CartService.clearCart(cartId)
-        res.render('ticket', { ticket ,cart: simplifiedCart })
+        res.render('ticket', { ticket ,cart: simplifiedCart, cartId: cartId })
     }  catch (error) {
         return res.status(500).json({ error: "Error interno del servidor" });
     }

@@ -1,6 +1,15 @@
 import { UserService } from "../services/repositories/index.js";
+import UserPasswordModel from '../dao/models/user_password.model.js'
 import UserDTO from "../dto/user.dto.js"
 import logger from '../logger.js';
+import fs from 'fs';
+import config from '../config/config.js';
+import nodemailer from "nodemailer";
+import Mailgen from "mailgen";
+import { generateRandomString } from '../utils.js';
+import { PORT } from '../app.js';
+import UserModel from '../dao/models/user.model.js';
+
 
 export const getUsersController = async (req, res) => {
     try {
@@ -131,3 +140,118 @@ export const getNormalController = async ( req, res ) => {
 		res.status(500).json({ error: error.message });
 	}
 }
+
+export const upgradeToPremiumController = async (req, res) => {
+	try {
+		const user = await UserModel.findById(req.params.uid)
+        await UserModel.findByIdAndUpdate(req.params.uid, { role: user.role === 'user' ? 'premium' : 'user' })
+        res.json({ status: 'success', message: 'Se ha actualizado el rol del usuario' })
+	}catch (error) {
+		logger.error("Error to upgrade user:", error.message);
+		res.status(500).json({ error: error.message });
+	}
+}
+
+export const sendDocumentsController = async (req, res) => {
+	try {
+		const fileType = req.body.fileType;
+
+		// Directorio base donde se guardarán los archivos
+		const baseDirectory = 'uploads';
+	
+		// Lógica para determinar la carpeta de destino según el fileType
+		let destinationFolder;
+	
+		switch (fileType) {
+			case 'document':
+				destinationFolder = 'documents';
+				break;
+			case 'profileImage':
+				destinationFolder = 'profiles';
+				break;
+			case 'productImage':
+				destinationFolder = 'products';
+				break;
+			default:
+				// Manejar otros casos si es necesario
+				return res.status(400).json({ error: 'Tipo de archivo no válido' });
+		}
+	
+		// Crear la carpeta de destino si no existe
+		const targetDirectory = `${baseDirectory}/${destinationFolder}`;
+	
+		if (!fs.existsSync(targetDirectory)) {
+			fs.mkdirSync(targetDirectory, { recursive: true });
+		}
+	
+		// Mover el archivo al directorio de destino
+		const sourcePath = req.file.path;
+		const targetPath = `${targetDirectory}/${req.file.filename}`;
+	
+		fs.renameSync(sourcePath, targetPath);
+	
+		res.json({ message: 'Archivo subido exitosamente' })
+	}catch (error) {
+		logger.error("Error al subir el archivo:", error.message);
+		res.status(500).json({ error: error.message });
+	}
+}
+
+export const forgetPasswordController = async (req, res) => {
+    const email = req.body.email;
+
+    try {
+        const user = await UserService.getByEmail(email);
+
+        if (!user) {
+            return res.status(404).json({ status: 'error', error: 'User not found' });
+        }
+
+        const token = generateRandomString(16);
+        await UserPasswordModel.create({ email, token });
+
+        const mailerConfig = {
+            service: 'gmail',
+            auth: {
+                user: config.nodemailer.user,
+                pass: config.nodemailer.pass
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        };
+
+        let transporter = nodemailer.createTransport(mailerConfig);
+
+        let Mailgenerator = new Mailgen({
+            theme: 'cerberus',
+            product: {
+                name: 'Kame-house',
+                link: 'http://localhost:8080',
+            },
+        });
+
+        let response = {
+            body: {
+                intro: `You have asked to reset your password. You can do it here: <a href="http://${req.hostname}:${PORT}/reset-password/${token}">http://${req.hostname}:${PORT}/reset-password/${token}</a><hr />Best regards,<br>`,
+                outro: 'The Kame-House team',
+            },
+        };
+
+        let mail = Mailgenerator.generate(response);
+
+        let message = {
+            from: 'Kame-House',
+            to: email,
+            subject: 'Reset your password',
+            html: mail,
+        };
+
+        await transporter.sendMail(message);
+
+        res.render("sessions/emailSent", { email: email });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ status: 'error', error: err.message });
+    }
+};

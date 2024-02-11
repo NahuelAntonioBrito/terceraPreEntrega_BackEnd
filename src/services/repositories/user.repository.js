@@ -143,5 +143,13 @@ export default class UserRepository {
             throw error;
         }
     };
+    getByEmail = async(email) => {
+        try {
+            return await this.dao.getByEmail(email);
+        } catch (error) {
+            logger.error('Error al obtener el usuario: ', error);
+            throw error;
+        }
+    }
     
 }

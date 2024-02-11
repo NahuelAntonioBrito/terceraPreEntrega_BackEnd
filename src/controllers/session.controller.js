@@ -4,6 +4,8 @@ import { generateErrorInfo} from '../services/errors/info.js'
 import EErros from "../services/errors/dictionary.js";
 import logger from "../logger.js";
 import { UserService } from '../services/repositories/index.js'
+import UserPasswordModel from '../dao/models/user_password.model.js'
+import { crateHash } from '../utils.js';
 
 export const registerController = async(req, res) => {
     res.redirect('/')
@@ -54,3 +56,25 @@ export const githubCallBackController = async (req, res) => {
         res.status(500).json({ status: 'error', error: 'Internal Server Error' });
     }
 };
+
+export const verifyTokenController = async (req, res) => {
+    const userPassword = await UserPasswordModel.findOne({ token: req.params.token })
+    if (!userPassword) {
+        return res.status(404).json({ status: 'error', error: 'Token no válido / El token ha expirado' })
+    }
+    const user = userPassword.email
+    res.render('sessions/reset-password', { user })
+}
+
+export const resetPasswordController = async ( req, res ) => {
+    try {
+        const email = req.params.user;
+        console.log("resetPasswordController: ", email)
+        const user = await UserService.getByEmail(email)
+        await UserService.update(user._id, { password: crateHash(req.body.newPassword) })
+        res.render("sessions/passwordCreated")
+        await UserPasswordModel.deleteOne({ email: req.params.user })
+    } catch(err) {
+        res.json({ status: 'error', error: err.message })
+    }
+}

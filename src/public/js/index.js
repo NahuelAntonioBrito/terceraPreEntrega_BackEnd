@@ -28,6 +28,7 @@ document.getElementById('createBtn').addEventListener('click', async () => {
         });
 
         const result = await response.json();
+        console.log(result)
 
         if (result.status === 'error') {
             throw new Error(result.error);

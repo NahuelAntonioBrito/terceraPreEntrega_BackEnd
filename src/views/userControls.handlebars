@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="/css/styles.css">
-
 <nav class="navbar bg-body-tertiary fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="/products"><img class="e-comerce-logo" src="../img/20191103_095948_24e69159-bfc2-49d6-a8a8-fa0b133663be.jpg" alt=""></a>
@@ -28,21 +27,35 @@
     </div>
 </nav>
 
-<h1>Subir archivos</h1>
+<h1 class="h1-userControl">Manejo de usuario</h1>
 
-<section class="uploadFileContainer">
-    <form class="form-register" action="/api/users/{{userId}}/documents" method="post" enctype="multipart/form-data">
-        <label  class="fileContainer" for="file">Selecciona un archivo:</label>
-        <input class="inputFile" type="file" name="file" id="file" />
+<section class="userControlContainer">
+    <form class="form-register" action="/users" method="POST">
+        <h2>Modificar el role del usuario</h2>
+        <label for="userId">Enter User ID:</label>
+        <input class="control-register" type="text" name="userId" id="userId" required>
 
-        <label for="fileType">Selecciona el tipo de archivo:</label>
-        <select class="select" name="fileType" id="fileType">
-            <option class="selectOption" value="document">Documento</option>
-            <option class="selectOption" value="profileImage">Imagen de Perfil</option>
-            <option class="selectOption" value="productImage">Imagen de Producto</option>
+        <label for="role">Role:</label>
+        
+        <select class="select" name="role" id="role">
+            <option class="selectOption" value="user">User</option>
+            <option class="selectOption" value="admin">Admin</option>
+            <option class="selectOption" value="premium">Premium</option>
         </select>
 
-        <input class="boton-register" type="submit" value="Subir Archivo" />
+        <!-- Agrega otros campos según sea necesario -->
+
+        <input type="hidden" name="_method" value="PUT">
+        <input class="boton-register" type="submit" value="Update Role" />
+    </form>
+
+    <form class="form-register" action="/users/delete" method="POST">
+        <h2>Eliminar el usuario</h2>
+        <label for="userIdDelete">Enter User ID:</label>
+        <input class="control-register" type="text" name="userIdDelete" id="userIdDelete" required>
+
+        <input type="hidden" name="_method" value="DELETE">
+        <input class="boton-register" type="submit" value="Delete User">
     </form>
 </section>
 

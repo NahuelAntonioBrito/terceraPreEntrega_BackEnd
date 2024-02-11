@@ -1,15 +1,11 @@
 import { Router } from "express";
 import passport from "passport";
+import { uploadFileController } from "../controllers/documents.controller";
 
 const router = Router();
 
 
-router.get('/Upload-file/:productId', passport.authenticate('current', { session: false }), async (req, res) => {
-    const userId = req.user.user._id;
-    const productId = req.params.productId;
-    console.log("Upload-file: ", { userId, productId });
-    res.render('uploadFile', { userId, productId });
-});
+router.get('/Upload-file', passport.authenticate('current', { session: false }), uploadFileController);
 
 
 export default router;
